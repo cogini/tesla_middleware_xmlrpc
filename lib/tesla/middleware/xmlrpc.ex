@@ -6,17 +6,12 @@ defmodule Tesla.Middleware.XMLRPC do
 
   ```
   defmodule FooClient do
-
     @api_url Application.compile_env(:foo_client, :api_url, "http://localhost:8080/")
-    @api_user Application.compile_env(:foo_client, :api_user, "myuser")
-    @api_pass Application.compile_env(:foo_client, :api_pass, "mysecret")
 
     use Tesla
 
     plug Tesla.Middleware.BaseUrl, @api_url
-    plug Tesla.Middleware.BasicAuth, username: @api_user, password: @api_pass
     plug Tesla.Middleware.XMLRPC
-    plug Tesla.Middleware.Logger
 
     def call(method_name, params, opts \\ []) do
       body = %XMLRPC.MethodCall{method_name: method_name, params: params}
@@ -36,6 +31,10 @@ defmodule Tesla.Middleware.XMLRPC do
     end
   end
   ```
+
+  ## Options
+
+  - `:xmlrpc_opts` - options passed to the XMLRPC encoder and decoder
   """
 
   @behaviour Tesla.Middleware
@@ -69,7 +68,8 @@ defmodule Tesla.Middleware.XMLRPC do
     end
   end
 
-  @spec encode_body(XMLRPC.MethodCall.t(), keyword()) :: {:ok, iodata()} | {:ok, binary()} | {:error, {any, binary()}}
+  @spec encode_body(XMLRPC.MethodCall.t(), keyword()) ::
+          {:ok, iodata()} | {:ok, binary()} | {:error, {any, binary()}}
   defp encode_body(body, tesla_opts) do
     opts = tesla_opts[:xmlrpc_opts] || []
     XMLRPC.encode(body, opts)
@@ -95,7 +95,8 @@ defmodule Tesla.Middleware.XMLRPC do
     end
   end
 
-  @spec decode_body(iodata(), keyword()) :: {:ok, XMLRPC.Fault.t() | XMLRPC.MethodResponse.t()} | {:error, binary()}
+  @spec decode_body(iodata(), keyword()) ::
+          {:ok, XMLRPC.Fault.t() | XMLRPC.MethodResponse.t()} | {:error, binary()}
   defp decode_body(body, tesla_opts) do
     opts = tesla_opts[:xmlrpc_opts] || []
     XMLRPC.decode(body, opts)
@@ -109,7 +110,7 @@ defmodule Tesla.Middleware.XMLRPC do
 
   defp decodable_content_type?(env, opts) do
     case Tesla.get_header(env, "content-type") do
-      nil -> false
+      nil -> true
       content_type -> Enum.any?(content_types(opts), &String.starts_with?(content_type, &1))
     end
   end

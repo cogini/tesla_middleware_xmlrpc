@@ -9,22 +9,27 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
       version: "0.1.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      description: description(),
-      package: package(),
-      source_url: @github,
-      homepage_url: @github,
-      docs: docs(),
+      aliases: aliases(),
+      dialyzer: [
+        plt_add_apps: [:mix, :ex_unit]
+      ],
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        "coveralls.lcov": :test,
+        quality: :test,
+        "quality.ci": :test
       ],
-      dialyzer: [
-        plt_add_apps: [:mix]
-      ],
+      description: description(),
+      package: package(),
+      source_url: @github,
+      homepage_url: @github,
+      docs: docs(),
       deps: deps()
     ]
   end
@@ -35,9 +40,12 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
     ]
   end
 
-  defp extra_applications(:test), do: [:hackney]
+  defp extra_applications(:dev), do: [:tools]
+  defp extra_applications(:test), do: [:tools]
+  # defp extra_applications(:test), do: [:hackney]
   defp extra_applications(_), do: []
 
+  defp elixirc_paths(:dev), do: ["lib", "test/support"]
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
@@ -83,6 +91,29 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
       ],
       # api_reference: false,
       source_url_pattern: "#{@github}/blob/master/%{path}#L%{line}"
+    ]
+  end
+
+  defp aliases do
+    [
+      setup: ["deps.get"],
+      quality: [
+        "format --check-formatted",
+        # mix deps.clean --unlock --unused
+        "deps.unlock --check-unused",
+        "credo",
+        "hex.audit",
+        "deps.audit",
+        "dialyzer --halt-exit-status"
+      ],
+      "quality.ci": [
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "hex.audit",
+        "deps.audit",
+        "credo",
+        "dialyzer --halt-exit-status"
+      ]
     ]
   end
 end

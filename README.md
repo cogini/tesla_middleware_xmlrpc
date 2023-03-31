@@ -26,15 +26,11 @@ Add this middleware as a plug in your client.
 
 ```elixir
 defmodule FooClient do
-
   @api_url Application.compile_env(:foo_client, :api_url, "http://localhost:8080/")
-  @api_user Application.compile_env(:foo_client, :api_user, "myuser")
-  @api_pass Application.compile_env(:foo_client, :api_pass, "mysecret")
 
   use Tesla
 
   plug Tesla.Middleware.BaseUrl, @api_url
-  plug Tesla.Middleware.BasicAuth, username: @api_user, password: @api_pass
   plug Tesla.Middleware.XMLRPC
   plug Tesla.Middleware.Logger
 
@@ -57,7 +53,6 @@ defmodule FooClient do
 end
 ```
 
-
-HexDocs are here: https://hexdocs.pm/tesla_middleware_xmlrpc
+Documentation is here: https://hexdocs.pm/tesla_middleware_xmlrpc
 
 This project uses the Contributor Covenant version 2.1. Check [CODE_OF_CONDUCT.md](/CODE_OF_CONDUCT.md) for more information.
