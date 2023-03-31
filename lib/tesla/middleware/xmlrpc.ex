@@ -52,9 +52,8 @@ defmodule Tesla.Middleware.XMLRPC do
     end
   end
 
-  @doc """
-  Encode request body as XML-RPC.
-  """
+  # Encode request body as XML-RPC.
+  @doc false
   def encode(env, opts) do
     with true <- encodable?(env),
          {:ok, body} <- encode_body(env.body, opts) do
@@ -82,9 +81,8 @@ defmodule Tesla.Middleware.XMLRPC do
   defp encodable?(%{body: %XMLRPC.MethodCall{}}), do: true
   defp encodable?(_), do: false
 
-  @doc """
-  Decode response body as XML-RPC.
-  """
+  # Decode response body as XML-RPC.
+  @doc false
   def decode(env, opts) do
     with true <- decodable?(env, opts),
          {:ok, body} <- decode_body(env.body, opts) do

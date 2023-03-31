@@ -27,6 +27,8 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
       ],
       description: description(),
       package: package(),
+      # Docs
+      name: "Tesla.Middleware.XMLRPC",
       source_url: @github,
       homepage_url: @github,
       docs: docs(),
@@ -82,15 +84,15 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
 
   defp docs do
     [
-      source_url: @github,
+      main: "Tesla.Middleware.XMLRPC",
       extras: [
-        {"README.md", %{title: "Overview"}},
-        {"CHANGELOG.md", %{title: "Changelog"}},
-        {"LICENSE", %{title: "License (Apache 2.0)"}},
-        {"CODE_OF_CONDUCT.md", %{title: "Code of Conduct"}}
+        "README.md",
+        "CHANGELOG.md": [title: "Changelog"],
+        "LICENSE": [title: "License (Apache 2.0)"],
+        "CODE_OF_CONDUCT.md": [title: "Code of Conduct"]
       ],
-      # api_reference: false,
-      source_url_pattern: "#{@github}/blob/master/%{path}#L%{line}"
+      api_reference: false
+      # source_url_pattern: "#{@github}/blob/master/%{path}#L%{line}"
     ]
   end
 
