@@ -73,7 +73,7 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
     [
       name: "tesla_middleware_xmlrpc",
       maintainers: ["Jake Morrison"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       links: %{
         "GitHub" => @github,
         "Tesla" => "https://github.com/elixir-tesla/tesla",
