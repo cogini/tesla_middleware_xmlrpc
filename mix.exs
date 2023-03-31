@@ -6,7 +6,7 @@ defmodule TeslaMiddlewareXmlrpc.MixProject do
   def project do
     [
       app: :tesla_middleware_xmlrpc,
-      version: "0.1.0",
+      version: "0.7.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
